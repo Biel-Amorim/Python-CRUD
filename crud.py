@@ -17,19 +17,32 @@ def main():
         cmd_insert = """
         INSERT INTO users(
         nm_user, login_user, pwd_user)
-        VALUES(%s, %s, %s)"""
+        VALUES(%s, %s, %s)
+        """
+
+        cmd_id = """
+        SELECT *
+        FROM users 
+        WHERE login_user = %s
+        """
+
         values = (nm_user, login_user, pwd_user)
-        cursor.execute(cmd_insert, values)
+        connection.execute(cmd_insert, values)
         connection.commit()
+        defined_id = connection.execute(cmd_id, (login_user,)).fetchone()
+        print(defined_id)
         print("Cara é pra funcionar")
 
     # R ead
     def read(columns, table, id): # for read ID
-        cmd_read = """
-        SELECT {0}
-        FROM {1}
-        WHERE id_user={2}"""
-        for i in cursor.execute(cmd_read.format(columns, table, id)):
+        cmd_read = f"""
+        SELECT {columns}
+        FROM {table}
+        WHERE id_user= %s
+        """
+
+        row = connection.execute(cmd_read,(id,)).fetchall()
+        for i in row:
             print(i)
 
         
@@ -37,39 +50,53 @@ def main():
     def update(nm_user, login_user, id): # is acording for user's id
         cmd_update = """
         UPDATE users 
-        SET nm_user = '{0}',
-            login_user = '{1}'
-        WHERE id_user = {2}""" 
-        cursor.execute(cmd_update.format(nm_user, login_user, id)) # remenber, use '' simple quotes for indicate string, no tables
-        connection.commit()
-        print("atualizdo com sucesso")
+        SET nm_user = %s,
+        login_user = %s
+        WHERE id_user = %s
+        """
 
+        cmd_condition = """SELECT EXISTS(
+        SELECT * FROM users
+        WHERE id_user = %s)
+        """
+        veryfing = connection.execute(cmd_condition, (id,)).fetchone()
+        if veryfing == (True,):
+            connection.execute(cmd_update, (nm_user, login_user, id)) # remenber, use '' simple quotes for indicate string, no tables
+            connection.commit()
+            print("atualizdo com sucesso")
+        else:
+            print(f"Vish man nem tem usuario com esse ID {id}")
 
 
     # D elete
     def delete(id):
         cmd_delete = """
         DELETE FROM users
-        WHERE IF EXISTid_user = {0}
+        WHERE id_user = %s
         """
-        try:
-            cursor.execute(cmd_delete.format(id))
+
+        cmd_condition = """SELECT EXISTS(
+        SELECT * FROM users
+        WHERE id_user = %s)
+        """
+        veryfing = connection.execute(cmd_condition, (id,)).fetchone()
+        
+        if veryfing == (True,):
+            connection.execute(cmd_delete, (id,))
             connection.commit()
             print("USUÁRIO DELETADO")
-        except:
-            print("este usuário não existe")
+        else:
+            print(f"Vish man nem tem usuario com esse ID {id}")
 
 
-    # read("*", "users", "1")
-    # update("Gabiruses", "GABIRU_MASTER", "1")
-    # read("*", "users", "1")
-    delete(5)
-    delete(5)
-    # update("Gabiruses", "GABIRU_MASTER", "5")
 
-    # read("*", "users", "5")
+    # create("Gabriel", "gabiru_plus", "no_hash_test")
+    # delete(10)
+    update("G2_cabeludo", "A_VOLTA_DOS_Q_N_FORAM", 11)
+    delete(11)
 
+    close_conec(connection)
 
 
 if __name__ == "__main__":
-    close_conec(main())
+    main()
