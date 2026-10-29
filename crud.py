@@ -38,20 +38,19 @@ def create(nm_user, login_user, pwd_user):
 
 
 # R ead
-def read(columns, table, id): # for read ID
+def read(columns, table, condition, value): # for read ID
 
     cmd_read = f"""
     SELECT {columns}
     FROM {table}
-    WHERE id_user= %s
+    WHERE {condition}= %s
     """
 
     connection =  conec()
 
-    row = connection.execute(cmd_read,(id,)).fetchall()
+    row = connection.execute(cmd_read,(value,)).fetchall()
     close_conec(connection)
-    for i in row:
-        print(i)
+    return row
 
     
 # U pdate 
