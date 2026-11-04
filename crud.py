@@ -22,7 +22,7 @@ def create(nm_user, login_user, pwd_user):
     """
 
     cmd_id = """
-    SELECT *
+    SELECT nm_user, login_user
     FROM users 
     WHERE login_user = %s
     """

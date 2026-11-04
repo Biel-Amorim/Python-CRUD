@@ -11,21 +11,19 @@ def verify_login(login):
     else:
         print(f"You can't pass")
         return False
-    # if i == (login,):
-    #     return f'The name {login} always exist'
-    # else:
-    #     return f'you can pass'
 
-def hash_password():
-    ...
 
-def register():
-    ...
+def hash_password(pwd):
+    hashed_pwd = bcrypt.hashpw(pwd, bcrypt.gensalt())
+    return hashed_pwd
+
+def register(name, login, password):
+    if verify_login(login):
+        new_pwd = hash_password(password)
+        create(name, login, new_pwd)
 
 if __name__ == "__main__":
     password = bytes('legal_man', 'UTF-8')
     name_user = "Gabrielsin_Boleras"
-    login_user = 'gabriel'
-    verify_login(login_user)
-    hash_password()
-    register()
+    login_user = 'gabrielegal'
+    register(name=name_user, login=login_user, password=password)
