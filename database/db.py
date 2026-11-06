@@ -1,7 +1,14 @@
 import psycopg
+from pathlib import Path
 import os
 from dotenv import load_dotenv
-load_dotenv()
+
+
+BASE_DIR = Path(__file__).resolve().parent
+denv_path = BASE_DIR/".."/"./env"
+
+
+load_dotenv(dotenv_path=denv_path)
 
 db_name = os.getenv("DB_NAME")
 db_user = os.getenv("DB_USER")

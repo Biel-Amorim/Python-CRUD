@@ -1,4 +1,4 @@
-from database import conec, close_conec
+from db import conec, close_conec
 
 """
 CRUD
@@ -120,4 +120,4 @@ if __name__ == "__main__":
     # read OK
     # update OK
     # delete OK
-    ...
+    print(f'test')

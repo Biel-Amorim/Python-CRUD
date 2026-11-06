@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seja bem-vindo! - Login</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Shrikhand / Fredoka para o título expressivo e Inter para o corpo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e4e6e5;
+        }
+        
+        /* Fonte display arredondada idêntica ao estilo do protótipo "Seja bem-vindo !" */
+        .font-welcome {
+            font-family: 'Caprasimo', cursive, sans-serif;
+            letter-spacing: 0.01em;
+        }
+
+        /* Estilo fiel aos inputs do protótipo */
+        .custom-input {
+            background-color: #f4f7f5;
+            border: 2.5px solid #cbd2ce;
+            border-radius: 12px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #f65c36;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(246, 92, 54, 0.15);
+        }
+
+        /* Botão laranja-avermelhado do protótipo */
+        .btn-logar {
+            background-color: #f65c36;
+            border-radius: 12px;
+            transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-logar:hover {
+            background-color: #e04b26;
+            box-shadow: 0 6px 16px rgba(246, 92, 54, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-logar:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-10">
+
+    <!-- Container Principal (Card do Protótipo) -->
+    <main class="w-full max-w-4xl bg-[#f8f9f8] rounded-none sm:rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row min-h-[540px] relative">
+        
+        <!-- Lado Esquerdo: Imagem do Gatinho (42% no Desktop, Topo no Mobile) -->
+        <div class="w-full md:w-[42%] relative bg-zinc-300 h-64 sm:h-80 md:h-auto overflow-hidden group">
+            <img 
+                id="catImage"
+                src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=800&q=80" 
+                onerror="this.src='https://placehold.co/600x800/d4d4d8/52525b?text=Gatinho+Meme'"
+                alt="Gatinho expressivo de boas-vindas" 
+                class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            />
+            
+            <!-- Botão discreto para você carregar exatamente o meme do seu computador se quiser -->
+            <label for="imageUpload" class="absolute bottom-3 left-3 bg-black/60 hover:bg-black/80 text-white text-xs px-3 py-1.5 rounded-lg cursor-pointer backdrop-blur-sm opacity-80 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Trocar foto</span>
+            </label>
+            <input type="file" id="imageUpload" accept="image/*" class="hidden" />
+        </div>
+
+        <!-- Lado Direito: Área do Formulário (58% no Desktop) -->
+        <div class="w-full md:w-[58%] flex flex-col justify-center px-6 py-10 sm:px-14 md:px-16 lg:px-20">
+            
+            <!-- TELA 1: Formulário de Login -->
+            <div id="loginView" class="w-full max-w-md mx-auto">
+                <!-- Título Principal -->
+                <h1 class="font-welcome text-[#f65c36] text-3xl sm:text-4xl mb-4 select-none">
+                    Seja bem-vindo !
+                </h1>
+
+                <!-- Subtítulo -->
+                <p class="text-gray-900 text-lg font-medium mb-6">
+                    Login
+                </p>
+
+                <!-- Caixa de Mensagem de Feedback (Erro / Aviso) -->
+                <div id="feedbackBox" class="hidden mb-5 p-3.5 rounded-xl text-sm font-medium transition-all"></div>
+
+                <!-- Formulário -->
+                <form id="loginForm" class="space-y-8" novalidate>
+                    <!-- Campo de Email -->
+                    <div>
+                        <label for="emailInput" class="sr-only">Email ou Login</label>
+                        <input 
+                            type="email" 
+                            id="emailInput" 
+                            placeholder="email" 
+                            required
+                            autocomplete="email"
+                            class="custom-input w-full px-4 py-3.5 text-gray-800 placeholder-gray-700 text-base"
+                        />
+                    </div>
+
+                    <!-- Campo de Senha com botão de mostrar/ocultar -->
+                    <div class="relative">
+                        <label for="senhaInput" class="sr-only">Senha</label>
+                        <input 
+                            type="password" 
+                            id="senhaInput" 
+                            placeholder="senha" 
+                            required
+                            autocomplete="current-password"
+                            class="custom-input w-full px-4 py-3.5 pr-12 text-gray-800 placeholder-gray-700 text-base"
+                        />
+                        <button 
+                            type="button" 
+                            id="togglePasswordBtn"
+                            aria-label="Mostrar ou ocultar senha"
+                            class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800 p-1 rounded-md focus:outline-none"
+                        >
+                            <!-- Ícone Olho Aberto -->
+                            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Botão Logar alinhado à direita como no protótipo -->
+                    <div class="flex justify-end pt-2">
+                        <button 
+                            type="submit" 
+                            id="submitBtn"
+                            class="btn-logar text-white font-medium text-base px-10 py-3.5 shadow-sm flex items-center justify-center min-w-[135px]"
+                        >
+                            <span>Logar</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TELA 2: Estado Autenticado (Simulação de Sessão Logada) -->
+            <div id="loggedInView" class="hidden w-full max-w-md mx-auto text-center md:text-left space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    Sessão Ativa
+                </div>
+
+                <h2 class="font-welcome text-[#f65c36] text-3xl sm:text-4xl">
+                    Olá, <span id="loggedUserDisplay">Leitor</span>!
+                </h2>
+
+                <p class="text-gray-600 text-base leading-relaxed">
+                    Seu login foi validado com sucesso. Você está conectado ao sistema da <strong>Biblioteca (`db_biblioteca`)</strong>.
+                </p>
+
+                <div class="p-4 rounded-xl bg-white border border-gray-200 text-left text-sm text-gray-700 space-y-1 shadow-sm">
+                    <p><span class="font-semibold text-gray-900">E-mail conectado:</span> <span id="loggedEmailText"></span></p>
+                    <p><span class="font-semibold text-gray-900">Status do Banco:</span> Pronto para consultas</p>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button 
+                        type="button" 
+                        id="logoutBtn"
+                        class="bg-gray-800 hover:bg-gray-900 text-white font-medium text-sm px-7 py-3 rounded-xl transition-colors"
+                    >
+                        Sair da conta
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Seleção dos elementos da interface
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('emailInput');
+        const senhaInput = document.getElementById('senhaInput');
+        const feedbackBox = document.getElementById('feedbackBox');
+        const loginView = document.getElementById('loginView');
+        const loggedInView = document.getElementById('loggedInView');
+        const loggedUserDisplay = document.getElementById('loggedUserDisplay');
+        const loggedEmailText = document.getElementById('loggedEmailText');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const imageUpload = document.getElementById('imageUpload');
+        const catImage = document.getElementById('catImage');
+
+        // Função para mostrar mensagens de erro ou sucesso sem usar alert()
+        function mostrarMensagem(texto, tipo = 'erro') {
+            feedbackBox.classList.remove('hidden', 'bg-red-100', 'text-red-800', 'border-red-300', 'bg-green-100', 'text-green-800', 'border-green-300');
+            
+            if (tipo === 'erro') {
+                feedbackBox.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-300');
+            } else {
+                feedbackBox.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-300');
+            }
+            
+            feedbackBox.textContent = texto;
+        }
+
+        // Mostrar / Ocultar senha
+        togglePasswordBtn.addEventListener('click', () => {
+            const isPassword = senhaInput.getAttribute('type') === 'password';
+            senhaInput.setAttribute('type', isPassword ? 'text' : 'password');
+        });
+
+        // Permitir trocar a foto lateral pela imagem exata do computador do usuário
+        imageUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    catImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Evento de clique no botão "Logar"
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const senha = senhaInput.value.trim();
+
+            // Validação de campos vazios
+            if (!email || !senha) {
+                mostrarMensagem('Por favor, preencha o email e a senha para entrar.', 'erro');
+                return;
+            }
+
+            // Validação simples de formato de email ou nome de usuário
+            if (senha.length < 3) {
+                mostrarMensagem('A senha deve ter pelo menos 3 caracteres.', 'erro');
+                return;
+            }
+
+            // Extrai o primeiro nome/apelido antes do @ para exibir na saudação
+            const nomeUsuario = email.includes('@') ? email.split('@')[0] : email;
+
+            // Esconde o alerta e faz a transição para a tela logada
+            feedbackBox.classList.add('hidden');
+            loggedUserDisplay.textContent = nomeUsuario;
+            loggedEmailText.textContent = email;
+
+            loginView.classList.add('hidden');
+            loggedInView.classList.remove('hidden');
+        });
+
+        // Evento para deslogar e voltar à tela inicial
+        logoutBtn.addEventListener('click', () => {
+            senhaInput.value = '';
+            loggedInView.classList.add('hidden');
+            loginView.classList.remove('hidden');
+            mostrarMensagem('Você saiu da sua conta com segurança.', 'sucesso');
+        });
+    </script>
+</body>
+</html>
