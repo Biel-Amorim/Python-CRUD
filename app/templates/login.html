@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_login.css')}}">
+    <title>Seja bem-vindo</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="image">
+            <img id="cat_image" src="{{ url_for('static', filename='funny_cat.avif')}}" alt="Imagem de login gato fofo">
+        </div>
+
+        <form action="/verify-login" method="post">
+            <div class="login">
+                <h2>Login</h2>
+
+                <label for="user">User:</label>
+                <input name="user" id="user">
+
+                <label for="password">password:</label>
+                <input type="password" name="password" id="password">
+
+                <div class="links">
+                    <a href="#">Forgot password</a>
+                    <a href="#">Sing Up</a>
+                </div>
+                <div class="button_div">
+                    <button class="enter" type="submit">Login</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</body>
+
+</html>
